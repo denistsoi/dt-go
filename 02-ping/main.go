@@ -1,31 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"github.com/fatih/color"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 func fetch() {
-	// r, err := http.Get("https://www.reddit.com/r/dadjokes.json")
-	// if err != nil {
-	// 	// handle error
-	// 	log.Fatal(err)
-	// } else {
-	// 	defer r.Body.Close()
-	// 		_, err := io.Copy(os.Stdout, r.Body)
-	// 		if err != nil {
-	// 			// handle error
-	// 			log.Fatal(err)
-	// 		}
-	// }
-
 	client := &http.Client{}
 	url := "http://facebook.com"
+	color.Yellow("Pinging %s", url)
 
-	// resp, err := client.Get(url)
 	resp, err := http.NewRequest("GET", url, nil)
 	startRes := time.Now()
 	response, err := client.Do(resp)
@@ -34,13 +21,17 @@ func fetch() {
 		log.Fatal(err)
 	} else {
 		defer response.Body.Close()
-		// _, err := io.Copy(os.Stdout, response.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		endRes := time.Now()
-		fmt.Println(" ")
+		switch response.StatusCode {
+		case http.StatusOK:
+			color.Green("Response Ok! 👌")
+		default:
+			color.Red("Error %d", response.StatusCode)
+		}
 		color.Yellow("Response %s", endRes.Sub(startRes))
 	}
 
