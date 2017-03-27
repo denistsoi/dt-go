@@ -1,0 +1,6 @@
+# ignore all
+*
+
+# except go files and readme
+!*.go
+!*.md
